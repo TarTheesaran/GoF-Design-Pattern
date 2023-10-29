@@ -1,10 +1,18 @@
 import { WeatherData } from './weatherData';
+import { WeatherObserver } from './weatherObserver';
 
 export class WeatherStation {
+  private observers: WeatherObserver[] = [];
+
+  public registerObserver(observer: WeatherObserver): void {
+    this.observers.push(observer);
+  }
+
   private data = new WeatherData(0, 0, 0);
 
   public update(data: WeatherData): void {
     this.data = data;
+    this.observers.forEach((observer) => observer.update(data));
   }
 
   updateCurrentConditionsDisplay(): string {
